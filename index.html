@@ -8,9 +8,11 @@
   :root{
     --green-dark:#2e7d32; --green:#4CAF50; --lime1:#8bc34a; --lime2:#7cb342;
     --text:#333; --muted:#7a7a7a; --border:#e6ebe1; --page:#ffffff;
-    --indica:#7e57c2; --sativa:#ef9a3d; --hybrid:#66bb6a;
-    --edge:16px;   /* mobile gutter — matches Flatsome's page padding */
-    --gap:12px;    /* gap between sliding cards */
+    /* slider geometry — overridden per breakpoint */
+    --edge:16px;   /* gutter before the first card */
+    --gap:12px;    /* space between cards */
+    --pv:1.38;     /* cards visible per view (fractional = peek) */
+    --nug:152px;   /* height of the image / icon slot */
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
@@ -18,117 +20,138 @@
     font-family:"Lato","Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;padding:44px 20px 70px;
   }
-  .bc-types{max-width:1040px;margin:0 auto}
+  .bc-types{max-width:1040px;margin:0 auto;position:relative}
 
-  .bc-types-head{text-align:center;margin-bottom:30px}
-  .bc-types-head h2{
-    font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--green-dark);
-    letter-spacing:-.01em;line-height:1.2;
+  /* ─────────────────────────────────────────────────────────────
+     SLIDER — native CSS scroll-snap at every width (Gymshark pattern)
+     ───────────────────────────────────────────────────────────── */
+  .bc-types-grid{
+    display:flex;
+    align-items:stretch;              /* every card the same height */
+    gap:var(--gap);
+    padding:6px 0 6px var(--edge);
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    scroll-padding-left:var(--edge);
+    overscroll-behavior-x:contain;    /* no accidental browser back-swipe */
+    -webkit-overflow-scrolling:touch; /* iOS momentum */
+    scrollbar-width:none;             /* Firefox */
+    -ms-overflow-style:none;
   }
-  .bc-types-head p{color:var(--muted);margin-top:8px;font-size:1rem;line-height:1.6;max-width:560px;margin-left:auto;margin-right:auto}
-  .bc-types-head .u{display:inline-block;width:64px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--lime1),var(--green));margin-top:14px}
-
-  .bc-types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .bc-types-grid::-webkit-scrollbar{display:none}
 
   .bc-type-card{
     position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;
+    flex:0 0 calc((100% - (var(--pv) - 1) * var(--gap)) / var(--pv));
+    scroll-snap-align:start;
     background:#fff;border:1px solid var(--border);border-radius:16px;
-    padding:22px 20px 24px;text-decoration:none;color:inherit;overflow:hidden;
+    padding:22px 18px 24px;text-decoration:none;color:inherit;overflow:hidden;
     box-shadow:0 2px 10px rgba(20,40,15,.04);
     transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s;
   }
 
-  /* soft tinted halo behind the bud */
-  .bc-nug{position:relative;width:100%;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-  .bc-nug::before{content:"";position:absolute;width:170px;height:170px;border-radius:50%;filter:blur(30px);opacity:.4;z-index:0;transition:opacity .3s}
-  .bc-type-card.indica .bc-nug::before{background:radial-gradient(circle,rgba(126,87,194,.4),transparent 65%)}
-  .bc-type-card.sativa .bc-nug::before{background:radial-gradient(circle,rgba(239,154,61,.4),transparent 65%)}
-  .bc-type-card.hybrid .bc-nug::before{background:radial-gradient(circle,rgba(102,187,106,.45),transparent 65%)}
-  .bc-nug img{position:relative;z-index:1;width:172px;height:172px;object-fit:contain;
+  /* per-card accent — one variable drives badge, halo and icon */
+  .bc-type-card.indica   {--accent:#7e57c2;--halo:rgba(126,87,194,.40)}
+  .bc-type-card.sativa   {--accent:#ef9a3d;--halo:rgba(239,154,61,.40)}
+  .bc-type-card.hybrid   {--accent:#66bb6a;--halo:rgba(102,187,106,.45)}
+  .bc-type-card.topshelf {--accent:#c9a227;--halo:rgba(201,162,39,.38)}
+  .bc-type-card.budget   {--accent:#2a9d8f;--halo:rgba(42,157,143,.35)}
+  .bc-type-card.lso      {--accent:#8d6e63;--halo:rgba(141,110,99,.35)}
+  .bc-type-card.smalls   {--accent:#5b8dbd;--halo:rgba(91,141,189,.35)}
+  .bc-type-card.gas      {--accent:#d84315;--halo:rgba(216,67,21,.32)}
+
+  /* image / icon slot — fixed height so photo and icon cards line up */
+  .bc-nug{position:relative;width:100%;height:var(--nug);flex:0 0 var(--nug);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .bc-nug::before{content:"";position:absolute;width:calc(var(--nug) - 10px);height:calc(var(--nug) - 10px);
+    border-radius:50%;filter:blur(30px);opacity:.4;z-index:0;transition:opacity .3s;
+    background:radial-gradient(circle,var(--halo),transparent 65%)}
+  .bc-nug img{position:relative;z-index:1;width:var(--nug);height:var(--nug);object-fit:contain;
     filter:drop-shadow(0 10px 12px rgba(0,0,0,.16));transition:transform .35s cubic-bezier(.2,.7,.2,1)}
 
-  /* hover effects only on real pointers — stops the lift sticking after a tap on mobile */
+  /* icon medallion — used by the grade cards that have no cut-out photo */
+  .bc-medal{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;
+    width:calc(var(--nug) * .78);height:calc(var(--nug) * .78);border-radius:50%;
+    background:#fff;border:1.5px solid var(--accent);
+    box-shadow:0 8px 20px -10px var(--halo), inset 0 0 0 7px rgba(255,255,255,1), inset 0 0 0 8.5px var(--halo);
+    transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .bc-medal svg{width:53%;height:53%;stroke:var(--accent);fill:none;
+    stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .bc-medal svg .fillmark{fill:var(--accent);stroke:none}
+
+  /* hover only on real pointers — stops the lift sticking after a tap */
   @media(hover:hover) and (pointer:fine){
     .bc-type-card:hover{transform:translateY(-6px);box-shadow:0 16px 30px -12px rgba(46,125,50,.28);border-color:var(--lime1)}
-    .bc-type-card:hover .bc-nug::before{opacity:.7}
+    .bc-type-card:hover .bc-nug::before{opacity:.75}
     .bc-type-card:hover .bc-nug img{transform:scale(1.06) rotate(-2deg)}
-    .bc-type-card:hover .bc-shop{gap:11px;filter:brightness(1.05)}
+    .bc-type-card:hover .bc-medal{transform:scale(1.06)}
   }
-  /* tap feedback on touch */
-  @media(hover:none){ .bc-type-card:active{transform:scale(.977);border-color:var(--lime1)} }
+  @media(hover:none){
+    .bc-type-card:active{transform:scale(.977);border-color:var(--lime1)}
+    /* one card per swipe on touch. Deliberately NOT applied on desktop:
+       snap-stop:always forbids passing any snap point, which would cap the
+       arrow buttons to advancing a single card per click. */
+    .bc-type-card{scroll-snap-stop:always}
+  }
 
   .bc-badge{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-    color:#fff;padding:4px 12px;border-radius:100px;margin-bottom:10px}
-  .bc-type-card.indica .bc-badge{background:var(--indica)}
-  .bc-type-card.sativa .bc-badge{background:var(--sativa)}
-  .bc-type-card.hybrid .bc-badge{background:var(--hybrid)}
+    color:#fff;background:var(--accent);padding:4px 12px;border-radius:100px;margin-bottom:10px;white-space:nowrap}
 
-  .bc-type-name{font-size:1.5rem;font-weight:800;color:var(--lime1);letter-spacing:-.01em;margin-bottom:5px}
-  .bc-type-desc{color:var(--muted);font-size:.9rem;line-height:1.5;margin-bottom:14px;min-height:40px}
+  .bc-type-name{font-size:1.35rem;font-weight:800;color:var(--lime1);letter-spacing:-.01em;margin-bottom:5px;line-height:1.2}
+  .bc-type-desc{color:var(--muted);font-size:.88rem;line-height:1.5;margin-bottom:14px}
 
-  .bc-effects{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:2px}
+  /* Pills follow the description by default. They're only bottom-anchored at
+     widths where every card wraps to the same number of pill rows (>=801px) —
+     anchoring them on narrow screens, where some cards wrap to 2 rows and some
+     to 1, strands a gap mid-card instead of at the card foot. */
+  .bc-effects{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-content:flex-start;margin-top:2px}
+  @media(min-width:801px){ .bc-effects{margin-top:auto} }
   .bc-effects span{font-size:.7rem;font-weight:600;color:var(--green-dark);
     background:rgba(139,195,74,.14);border:1px solid rgba(139,195,74,.4);padding:4px 11px;border-radius:100px}
 
-  .bc-shop{margin-top:auto;display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.85rem;
-    letter-spacing:.04em;text-transform:uppercase;color:#fff;
-    background:linear-gradient(180deg,var(--lime1),var(--lime2));
-    padding:12px 26px;border-radius:8px;box-shadow:0 5px 14px -5px rgba(124,179,66,.6);transition:gap .25s,filter .25s}
+  /* ── arrows (desktop / real pointers only) ───────────────────── */
+  .bc-arrow{position:absolute;top:calc(var(--nug) / 2 + 6px);transform:translateY(-50%);
+    width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:#fff;
+    display:none;align-items:center;justify-content:center;cursor:pointer;z-index:5;
+    box-shadow:0 6px 18px -6px rgba(20,40,15,.3);
+    transition:opacity .25s,background .25s,border-color .25s,transform .25s}
+  .bc-arrow svg{width:17px;height:17px;stroke:var(--green-dark);fill:none;stroke-width:2.2;
+    stroke-linecap:round;stroke-linejoin:round}
+  .bc-arrow:hover{background:var(--lime1);border-color:var(--lime1);transform:translateY(-50%) scale(1.06)}
+  .bc-arrow:hover svg{stroke:#fff}
+  .bc-arrow[disabled]{opacity:0;pointer-events:none}
+  .bc-arrow--prev{left:-14px}
+  .bc-arrow--next{right:-14px}
+  @media(hover:hover) and (pointer:fine) and (min-width:801px){ .bc-arrow{display:flex} }
 
-  /* scroll progress bar — hidden on desktop, shown under the slider on mobile */
-  .bc-slide-progress{display:none;height:3px;border-radius:99px;background:rgba(46,125,50,.12);
+  /* ── scroll progress bar ─────────────────────────────────────── */
+  .bc-slide-progress{height:3px;border-radius:99px;background:rgba(46,125,50,.12);
     margin:18px auto 0;max-width:200px;overflow:hidden}
   .bc-slide-progress i{display:block;height:100%;width:40%;border-radius:99px;
     background:linear-gradient(90deg,var(--lime1),var(--green));
     transform:translateX(0);transition:transform .12s linear,width .2s ease}
 
-  /* ─────────────────────────────────────────────────────────────
-     MOBILE / TABLET — Gymshark-style horizontal snap slider
-     ───────────────────────────────────────────────────────────── */
+  /* ── breakpoints ─────────────────────────────────────────────── */
   @media(max-width:800px){
     .bc-types{max-width:none}
-
-    .bc-types-grid{
-      display:flex;
-      grid-template-columns:none;
-      align-items:stretch;              /* all cards equal height */
-      gap:var(--gap);
-      /* full-bleed: break out of the page gutter so cards run edge to edge */
-      margin-left:calc(50% - 50vw);
-      margin-right:calc(50% - 50vw);
-      padding:6px 0 6px var(--edge);
-      overflow-x:auto;
-      overflow-y:hidden;
-      scroll-snap-type:x mandatory;
-      scroll-padding-left:var(--edge);
-      overscroll-behavior-x:contain;    /* no accidental browser back-swipe */
-      -webkit-overflow-scrolling:touch; /* iOS momentum */
-      scrollbar-width:none;             /* Firefox */
-      -ms-overflow-style:none;
-    }
-    .bc-types-grid::-webkit-scrollbar{display:none}
-    /* trailing spacer — reliable right-hand gutter inside a scroll container.
-       minus the gap, since flex gap already sits between it and the last card */
+    /* full-bleed: break out of the page gutter so cards run edge to edge */
+    .bc-types-grid{margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
+    /* trailing spacer — reliable right gutter inside a scroll container.
+       minus the gap, which already sits between it and the last card */
     .bc-types-grid::after{content:"";flex:0 0 calc(var(--edge) - var(--gap));height:1px}
-
-    .bc-type-card{
-      flex:0 0 72%;
-      min-width:240px;
-      max-width:300px;
-      scroll-snap-align:start;
-      scroll-snap-stop:always;          /* one card per swipe, no skipping */
-      padding:20px 18px 22px;
-    }
-
-    .bc-type-desc{min-height:0}
-    .bc-nug img{width:152px;height:152px}
-    .bc-nug::before{width:150px;height:150px}
-
-    .bc-slide-progress{display:block}
+    .bc-type-card{min-width:240px;max-width:300px}
   }
+  @media(min-width:601px) and (max-width:800px){ :root{--pv:2.4;--gap:14px}
+    .bc-type-card{max-width:none} }
+  @media(min-width:801px){  :root{--pv:3.2;--gap:18px;--edge:0px;--nug:158px} }
+  @media(min-width:1025px){ :root{--pv:4.2;--gap:20px;--nug:150px}
+    .bc-type-card{padding:22px 16px 24px}
+    .bc-type-name{font-size:1.25rem}
+    .bc-type-desc{font-size:.84rem} }
 
   @media(prefers-reduced-motion:reduce){
-    .bc-type-card,.bc-nug img,.bc-nug::before,.bc-shop,.bc-slide-progress i{transition:none!important}
+    .bc-type-card,.bc-nug img,.bc-nug::before,.bc-medal,.bc-arrow,.bc-slide-progress i{transition:none!important}
   }
 
   .demo-note{max-width:760px;margin:40px auto 0;padding:16px 20px;border:1px dashed var(--border);border-radius:12px;
@@ -140,7 +163,14 @@
 
 <div class="bc-types">
 
-  <div class="bc-types-grid" role="group" aria-label="Shop by strain type">
+  <button class="bc-arrow bc-arrow--prev" type="button" aria-label="Previous categories">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg>
+  </button>
+  <button class="bc-arrow bc-arrow--next" type="button" aria-label="Next categories">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg>
+  </button>
+
+  <div class="bc-types-grid" role="group" aria-label="Shop cannabis by strain type and grade">
 
     <a class="bc-type-card indica" href="https://www.bulkcannabis.cc/product-category/cannabis/indica/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-indica.png" alt="Frosty purple indica cannabis bud" loading="lazy" draggable="false"></div>
@@ -166,12 +196,93 @@
       <div class="bc-effects"><span>Balanced</span><span>Versatile</span><span>Anytime</span></div>
     </a>
 
+    <a class="bc-type-card topshelf" href="https://www.bulkcannabis.cc/product-category/cannabis/top-shelf-cannabis/">
+      <div class="bc-nug">
+        <span class="bc-medal">
+          <svg viewBox="0 0 24 24" role="img" aria-label="Crown icon">
+            <path d="M3.5 9.8 L7.2 12.6 L12 6 L16.8 12.6 L20.5 9.8 L19 18.6 L5 18.6 Z"/>
+            <circle class="fillmark" cx="3.5" cy="8" r="1.35"/>
+            <circle class="fillmark" cx="12" cy="4.4" r="1.35"/>
+            <circle class="fillmark" cx="20.5" cy="8" r="1.35"/>
+          </svg>
+        </span>
+      </div>
+      <span class="bc-badge">AAAA</span>
+      <div class="bc-type-name">Top Shelf</div>
+      <div class="bc-type-desc">Our frostiest, best-cured flower on the shelf.</div>
+      <div class="bc-effects"><span>AAAA</span><span>Hand-trimmed</span><span>Top terps</span></div>
+    </a>
+
+    <a class="bc-type-card budget" href="https://www.bulkcannabis.cc/product-category/cannabis/100-dollar-ounces/">
+      <div class="bc-nug">
+        <span class="bc-medal">
+          <svg viewBox="0 0 24 24" role="img" aria-label="Price tag icon">
+            <path d="M4 12.6 L4 4.6 L12 4.6 L20 12.6 L12 20.6 Z"/>
+            <circle class="fillmark" cx="8.1" cy="8.7" r="1.5"/>
+          </svg>
+        </span>
+      </div>
+      <span class="bc-badge">Value</span>
+      <div class="bc-type-name">Budget Buds</div>
+      <div class="bc-type-desc">Solid everyday flower that stretches further.</div>
+      <div class="bc-effects"><span>Value</span><span>Ounce deals</span><span>Daily driver</span></div>
+    </a>
+
+    <a class="bc-type-card lso" href="https://www.bulkcannabis.cc/product-category/cannabis/lso/">
+      <div class="bc-nug">
+        <span class="bc-medal">
+          <svg viewBox="0 0 24 24" role="img" aria-label="Seedling in soil icon">
+            <path d="M12 19.5 L12 10.2"/>
+            <path d="M12 12.4 C12 8.8 9.4 6.6 5.4 6.6 C5.4 10.2 8 12.4 12 12.4 Z"/>
+            <path d="M12 11.6 C12 8.4 14.4 6.4 18.2 6.4 C18.2 9.6 15.8 11.6 12 11.6 Z"/>
+            <path d="M4.6 19.5 L19.4 19.5"/>
+          </svg>
+        </span>
+      </div>
+      <span class="bc-badge">Organic</span>
+      <div class="bc-type-name">Living Soil</div>
+      <div class="bc-type-desc">Grown in living soil for richer terpenes.</div>
+      <div class="bc-effects"><span>Living soil</span><span>Small batch</span><span>Craft grown</span></div>
+    </a>
+
+    <a class="bc-type-card smalls" href="https://www.bulkcannabis.cc/product-category/cannabis/smalls/">
+      <div class="bc-nug">
+        <span class="bc-medal">
+          <svg viewBox="0 0 24 24" role="img" aria-label="Cluster of small nugs icon">
+            <circle cx="8.2" cy="8.6" r="3.3"/>
+            <circle cx="16.1" cy="7.4" r="2.4"/>
+            <circle cx="13.2" cy="15.4" r="3.7"/>
+            <circle cx="6.3" cy="16.4" r="2.1"/>
+          </svg>
+        </span>
+      </div>
+      <span class="bc-badge">Small nugs</span>
+      <div class="bc-type-name">Smalls</div>
+      <div class="bc-type-desc">Same genetics as our jars, just smaller nugs.</div>
+      <div class="bc-effects"><span>Small nugs</span><span>Same genetics</span><span>Best value</span></div>
+    </a>
+
+    <a class="bc-type-card gas" href="https://www.bulkcannabis.cc/product-category/cannabis/gas-strains/">
+      <div class="bc-nug">
+        <span class="bc-medal">
+          <svg viewBox="0 0 24 24" role="img" aria-label="Fuel drop icon">
+            <path d="M12 3.4 C12 3.4 5.6 10.4 5.6 14.4 A6.4 6.4 0 0 0 18.4 14.4 C18.4 10.4 12 3.4 12 3.4 Z"/>
+            <path d="M9.3 14.9 A2.7 2.7 0 0 0 12 17.6"/>
+          </svg>
+        </span>
+      </div>
+      <span class="bc-badge">Loud</span>
+      <div class="bc-type-name">Gas Strains</div>
+      <div class="bc-type-desc">Loud, fuel-forward strains for terp chasers.</div>
+      <div class="bc-effects"><span>Pungent</span><span>Fuel terps</span><span>Loud</span></div>
+    </a>
+
   </div>
 
   <div class="bc-slide-progress" aria-hidden="true"><i></i></div>
 
   <div class="demo-note">
-    <b>Preview note:</b> resize your browser under 800px (or open on a phone) to see the Gymshark-style slider — cards run edge-to-edge, snap one at a time, and the next card peeks in from the right so it reads as swipeable. Desktop keeps the original 3-across grid, unchanged. Uses native CSS scroll-snap (same technique Gymshark uses), so it inherits real touch momentum and costs no carousel library.
+    <b>Preview note:</b> horizontal slider at every width. On desktop use the arrows (they fade out at each end); on mobile it's a native touch swipe — cards run edge-to-edge and snap one at a time with the next card peeking in. The three strain-type cards keep their cut-out buds; the five grade cards use accent-coloured icon medallions, each with its own colour. Uses native CSS scroll-snap, so no carousel library.
   </div>
 
 </div>
@@ -180,20 +291,44 @@
 (function(){
   var grid = document.querySelector('.bc-types-grid');
   var bar  = document.querySelector('.bc-slide-progress');
-  if(!grid || !bar) return;
-  var thumb = bar.querySelector('i'), ticking = false;
+  if(!grid) return;
+  var thumb = bar ? bar.querySelector('i') : null;
+  var prev  = document.querySelector('.bc-arrow--prev');
+  var next  = document.querySelector('.bc-arrow--next');
+  var ticking = false;
+
+  function maxScroll(){ return grid.scrollWidth - grid.clientWidth; }
 
   function paint(){
     ticking = false;
-    var max = grid.scrollWidth - grid.clientWidth;
-    if(max < 4){ bar.style.visibility = 'hidden'; return; }
-    bar.style.visibility = 'visible';
-    var ratio = grid.clientWidth / grid.scrollWidth;      // thumb size
-    var pct   = grid.scrollLeft / max;                    // 0 → 1
-    thumb.style.width = (ratio * 100) + '%';
-    thumb.style.transform = 'translateX(' + (pct * (100/ratio - 100)) + '%)';
+    var max = maxScroll();
+    if(bar){
+      if(max < 4){ bar.style.visibility = 'hidden'; }
+      else{
+        bar.style.visibility = 'visible';
+        var ratio = grid.clientWidth / grid.scrollWidth;   // thumb size
+        var pct   = grid.scrollLeft / max;                 // 0 → 1
+        thumb.style.width = (ratio * 100) + '%';
+        thumb.style.transform = 'translateX(' + (pct * (100/ratio - 100)) + '%)';
+      }
+    }
+    if(prev) prev.disabled = grid.scrollLeft <= 2;
+    if(next) next.disabled = grid.scrollLeft >= max - 2 || max < 4;
   }
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(paint); } }
+
+  // advance by whole cards — as many as currently fit on screen
+  function stepBy(dir){
+    var card = grid.querySelector('.bc-type-card');
+    if(!card) return;
+    var gap  = parseFloat(getComputedStyle(grid).columnGap) || 0;
+    var unit = card.getBoundingClientRect().width + gap;
+    var page = Math.max(1, Math.floor(grid.clientWidth / unit)) * unit;
+    var soft = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    grid.scrollBy({left: dir * page, behavior: soft});
+  }
+  if(prev) prev.addEventListener('click', function(){ stepBy(-1); });
+  if(next) next.addEventListener('click', function(){ stepBy(1);  });
 
   grid.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', paint);
