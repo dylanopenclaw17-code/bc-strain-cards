@@ -154,14 +154,10 @@
     .bc-nug{margin-bottom:8px}
     .bc-nug::before{filter:blur(18px)}
     .bc-type-name{font-size:.78rem;line-height:1.15;margin-bottom:8px}
-    /* pills stay: at 115px each sits on its own line, 3 rows on every card,
-       no wrapping and no ragged edges. The description does not — it runs to
-       3-4 lines here, so it is held back until 601px. */
-    .bc-type-desc{display:none}
-    /* nowrap so a two-word pill never breaks inside its own capsule; the
-       font scales with the viewport so it still fits a 92px card at 320px */
-    .bc-effects{gap:5px}
-    .bc-effects span{white-space:nowrap;font-size:clamp(.58rem,2.55vw,.7rem);padding:3px 8px}
+    /* description instead of the pill stack — same copy as desktop, sized
+       fluidly so it stays readable in a 92-127px card */
+    .bc-type-desc{font-size:clamp(.62rem,2.9vw,.78rem);line-height:1.35;margin-bottom:0}
+    .bc-effects{display:none}
   }
   @media(min-width:601px) and (max-width:800px){ :root{--pv:2.4;--gap:14px}
     .bc-type-card{max-width:none} }
