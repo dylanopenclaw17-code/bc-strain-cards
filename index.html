@@ -72,6 +72,10 @@
 
   /* hover only on real pointers — stops the lift sticking after a tap */
   @media(hover:hover) and (pointer:fine){
+    /* drag affordance — mouse only; touch keeps native scrolling */
+    .bc-types-grid{cursor:grab}
+    .bc-types-grid.is-dragging{cursor:grabbing;user-select:none;-webkit-user-select:none}
+    .bc-types-grid.is-dragging .bc-type-card{transform:none;box-shadow:0 2px 10px rgba(20,40,15,.04)}
     .bc-type-card:hover{transform:translateY(-6px);box-shadow:0 16px 30px -12px rgba(46,125,50,.28);border-color:var(--lime1)}
     .bc-type-card:hover .bc-nug::before{opacity:.75}
     .bc-type-card:hover .bc-nug img{transform:scale(1.06) rotate(-2deg)}
@@ -277,6 +281,82 @@
   }
   if(prev) prev.addEventListener('click', function(){ stepBy(-1); });
   if(next) next.addEventListener('click', function(){ stepBy(1);  });
+
+  // ── click-and-drag (mouse only) ─────────────────────────────────
+  // Touch already has native momentum scrolling, which beats anything we'd
+  // write, so this is gated to pointerType 'mouse'.
+  var down = false, moved = false, startX = 0, startLeft = 0,
+      lastX = 0, lastT = 0, vel = 0, settle = null;
+  var THRESH = 4;   // px of travel before it counts as a drag, not a click
+
+  grid.addEventListener('pointerdown', function(e){
+    if(e.pointerType !== 'mouse' || e.button !== 0 || maxScroll() < 4) return;
+    down = true; moved = false;
+    startX = lastX = e.clientX;
+    startLeft = grid.scrollLeft;
+    lastT = e.timeStamp; vel = 0;
+    clearTimeout(settle);
+    // snap fights direct scrollLeft writes — turn it off for the drag
+    grid.style.scrollSnapType = 'none';
+    grid.classList.add('is-dragging');
+  });
+
+  grid.addEventListener('pointermove', function(e){
+    if(!down) return;
+    var dx = e.clientX - startX;
+    if(Math.abs(dx) > THRESH && !moved){
+      moved = true;
+      // Capture only once a real drag starts. Capturing on pointerdown would
+      // retarget the click to the grid, so a plain click would never reach the
+      // card's <a> and every link would be dead.
+      if(grid.setPointerCapture) grid.setPointerCapture(e.pointerId);
+    }
+    grid.scrollLeft = startLeft - dx;
+    var dt = e.timeStamp - lastT;
+    if(dt > 0) vel = (lastX - e.clientX) / dt;   // px/ms, positive = rightward
+    lastX = e.clientX; lastT = e.timeStamp;
+    if(moved) e.preventDefault();
+  });
+
+  function endDrag(e){
+    if(!down) return;
+    down = false;
+    grid.classList.remove('is-dragging');
+    if(e && e.pointerId != null && grid.releasePointerCapture &&
+       grid.hasPointerCapture && grid.hasPointerCapture(e.pointerId)){
+      grid.releasePointerCapture(e.pointerId);
+    }
+    if(!moved){ grid.style.scrollSnapType = ''; return; }
+    // coast briefly on the release velocity, then settle on the nearest card
+    var max = maxScroll();
+    var projected = Math.max(0, Math.min(max, grid.scrollLeft + vel * 140));
+    var pad = parseFloat(getComputedStyle(grid).paddingLeft) || 0;
+    // measure against the scroll container itself, not offsetParent: under the
+    // mobile full-bleed rule the grid carries a negative margin, so offsetLeft
+    // is shifted and would land the glide between cards
+    var gridLeft = grid.getBoundingClientRect().left, here = grid.scrollLeft;
+    var best = here, bestD = Infinity;
+    [].forEach.call(grid.querySelectorAll('.bc-type-card'), function(c){
+      var t = here + c.getBoundingClientRect().left - gridLeft - pad;
+      t = Math.max(0, Math.min(max, t));
+      var d = Math.abs(t - projected);
+      if(d < bestD){ bestD = d; best = t; }
+    });
+    var soft = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    grid.scrollTo({left: best, behavior: soft});
+    // restore snap only once the glide has finished, or it yanks mid-animation
+    settle = setTimeout(function(){ grid.style.scrollSnapType = ''; }, 450);
+  }
+  grid.addEventListener('pointerup', endDrag);
+  grid.addEventListener('pointercancel', endDrag);
+  window.addEventListener('pointerup', endDrag);          // safety net
+
+  // every card is a link — a drag must not navigate on release
+  grid.addEventListener('click', function(e){
+    if(moved){ e.preventDefault(); e.stopPropagation(); moved = false; }
+  }, true);
+  // and no native link/image ghost while dragging
+  grid.addEventListener('dragstart', function(e){ e.preventDefault(); });
 
   grid.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', paint);
