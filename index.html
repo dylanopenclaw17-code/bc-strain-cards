@@ -90,12 +90,9 @@
     .bc-type-card{scroll-snap-stop:always}
   }
 
-  .bc-badge{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-    color:#fff;background:var(--accent);padding:4px 12px;border-radius:100px;margin-bottom:10px;white-space:nowrap}
-
   /* Brand lime is 2.1:1 on white, under the 3:1 large-text AA floor. Kept
      deliberately as a brand decision — don't "fix" this in a later pass. */
-  .bc-type-name{font-size:1.35rem;font-weight:800;color:var(--lime1);letter-spacing:-.01em;margin-bottom:5px;line-height:1.2}
+  .bc-type-name{font-size:1.35rem;font-weight:800;color:var(--lime1);letter-spacing:-.01em;margin:4px 0 6px;line-height:1.2}
   .bc-type-desc{color:var(--muted);font-size:.88rem;line-height:1.5;margin-bottom:14px}
 
   /* Pills follow the description by default. They're only bottom-anchored at
@@ -156,9 +153,15 @@
     .bc-type-card{min-width:0;max-width:none;padding:12px 6px 14px;border-radius:12px}
     .bc-nug{margin-bottom:8px}
     .bc-nug::before{filter:blur(18px)}
-    .bc-badge{font-size:.5rem;letter-spacing:.03em;padding:3px 7px;margin-bottom:6px}
-    .bc-type-name{font-size:.78rem;line-height:1.15;margin-bottom:0}
-    .bc-type-desc,.bc-effects{display:none}
+    .bc-type-name{font-size:.78rem;line-height:1.15;margin-bottom:8px}
+    /* pills stay: at 115px each sits on its own line, 3 rows on every card,
+       no wrapping and no ragged edges. The description does not — it runs to
+       3-4 lines here, so it is held back until 601px. */
+    .bc-type-desc{display:none}
+    /* nowrap so a two-word pill never breaks inside its own capsule; the
+       font scales with the viewport so it still fits a 92px card at 320px */
+    .bc-effects{gap:5px}
+    .bc-effects span{white-space:nowrap;font-size:clamp(.58rem,2.55vw,.7rem);padding:3px 8px}
   }
   @media(min-width:601px) and (max-width:800px){ :root{--pv:2.4;--gap:14px}
     .bc-type-card{max-width:none} }
@@ -192,7 +195,6 @@
 
     <a class="bc-type-card indica" href="https://www.bulkcannabis.cc/product-category/cannabis/indica/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-indica-1.webp" alt="Frosty purple indica cannabis bud" loading="lazy" draggable="false"></div>
-      <span class="bc-badge">Indica</span>
       <div class="bc-type-name">Indica</div>
       <div class="bc-type-desc">Heavy, body-first strains built for winding down.</div>
       <div class="bc-effects"><span>Relaxing</span><span>Body-heavy</span><span>Evening</span></div>
@@ -200,7 +202,6 @@
 
     <a class="bc-type-card sativa" href="https://www.bulkcannabis.cc/product-category/cannabis/sativa/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-sativa-1.webp" alt="Frosty green sativa cannabis bud" loading="lazy" draggable="false"></div>
-      <span class="bc-badge">Sativa</span>
       <div class="bc-type-name">Sativa</div>
       <div class="bc-type-desc">Bright, cerebral strains for daytime energy and focus.</div>
       <div class="bc-effects"><span>Uplifting</span><span>Focus</span><span>Daytime</span></div>
@@ -208,7 +209,6 @@
 
     <a class="bc-type-card hybrid" href="https://www.bulkcannabis.cc/product-category/cannabis/hybrid/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-hybrid-1.webp" alt="Frosty hybrid cannabis bud" loading="lazy" draggable="false"></div>
-      <span class="bc-badge">Hybrid</span>
       <div class="bc-type-name">Hybrid</div>
       <div class="bc-type-desc">Balanced genetics — the best of both worlds.</div>
       <div class="bc-effects"><span>Balanced</span><span>Versatile</span><span>Anytime</span></div>
@@ -216,7 +216,6 @@
 
     <a class="bc-type-card topshelf" href="https://www.bulkcannabis.cc/product-category/cannabis/top-shelf-cannabis/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-topshelf.webp" alt="Cluster of large frosty top-shelf AAAA cannabis buds" loading="lazy" draggable="false"></div>
-      <span class="bc-badge">AAAA</span>
       <div class="bc-type-name">Top Shelf</div>
       <div class="bc-type-desc">Our frostiest, best-cured flower on the shelf.</div>
       <div class="bc-effects"><span>AAAA</span><span>Hand-trimmed</span><span>Top terps</span></div>
@@ -224,7 +223,6 @@
 
     <a class="bc-type-card budget" href="https://www.bulkcannabis.cc/product-category/cannabis/100-dollar-ounces/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-budget.webp" alt="Two dense budget-friendly cannabis buds" loading="lazy" draggable="false"></div>
-      <span class="bc-badge">Value</span>
       <div class="bc-type-name">Budget Buds</div>
       <div class="bc-type-desc">Solid everyday flower that stretches further.</div>
       <div class="bc-effects"><span>Value</span><span>Ounce deals</span><span>Daily driver</span></div>
@@ -232,7 +230,6 @@
 
     <a class="bc-type-card lso" href="https://www.bulkcannabis.cc/product-category/cannabis/lso/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-lso.webp" alt="Living soil organic cannabis buds with frosty trichomes" loading="lazy" draggable="false"></div>
-      <span class="bc-badge">Organic</span>
       <div class="bc-type-name">Living Soil</div>
       <div class="bc-type-desc">Grown in living soil for richer terpenes.</div>
       <div class="bc-effects"><span>Living soil</span><span>Small batch</span><span>Craft grown</span></div>
@@ -240,7 +237,6 @@
 
     <a class="bc-type-card smalls" href="https://www.bulkcannabis.cc/product-category/cannabis/smalls/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-smalls.webp" alt="Pile of small popcorn cannabis nugs" loading="lazy" draggable="false"></div>
-      <span class="bc-badge">Small nugs</span>
       <div class="bc-type-name">Smalls</div>
       <div class="bc-type-desc">Same genetics as our jars, just smaller nugs.</div>
       <div class="bc-effects"><span>Small nugs</span><span>Same genetics</span><span>Best value</span></div>
@@ -248,7 +244,6 @@
 
     <a class="bc-type-card gas" href="https://www.bulkcannabis.cc/product-category/cannabis/gas-strains/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-gas-pink-kush.webp" alt="Cluster of frosty Pink Kush gas strain cannabis buds" loading="lazy" draggable="false"></div>
-      <span class="bc-badge">Loud</span>
       <div class="bc-type-name">Gas Strains</div>
       <div class="bc-type-desc">Loud, fuel-forward strains for terp chasers.</div>
       <div class="bc-effects"><span>Pungent</span><span>Fuel terps</span><span>Loud</span></div>
