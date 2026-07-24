@@ -107,12 +107,13 @@
       -ms-overflow-style:none;
     }
     .bc-types-grid::-webkit-scrollbar{display:none}
-    /* trailing spacer — reliable right-hand gutter inside a scroll container */
-    .bc-types-grid::after{content:"";flex:0 0 var(--edge);height:1px}
+    /* trailing spacer — reliable right-hand gutter inside a scroll container.
+       minus the gap, since flex gap already sits between it and the last card */
+    .bc-types-grid::after{content:"";flex:0 0 calc(var(--edge) - var(--gap));height:1px}
 
     .bc-type-card{
       flex:0 0 72%;
-      min-width:250px;
+      min-width:240px;
       max-width:300px;
       scroll-snap-align:start;
       scroll-snap-stop:always;          /* one card per swipe, no skipping */
