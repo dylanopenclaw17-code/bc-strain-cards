@@ -148,6 +148,18 @@
     .bc-types-grid::after{content:"";flex:0 0 calc(var(--edge) - var(--gap));height:1px}
     .bc-type-card{min-width:240px;max-width:300px}
   }
+  /* Phones: 3 cards across with a sliver of the 4th. At ~114px wide there is
+     no room for prose or pill rows, so the card reduces to art + grade + name.
+     The text stays in the DOM for the wider breakpoints. */
+  @media(max-width:600px){
+    :root{--pv:3.15;--gap:8px;--edge:12px;--nug:86px}
+    .bc-type-card{min-width:0;max-width:none;padding:12px 6px 14px;border-radius:12px}
+    .bc-nug{margin-bottom:8px}
+    .bc-nug::before{filter:blur(18px)}
+    .bc-badge{font-size:.5rem;letter-spacing:.03em;padding:3px 7px;margin-bottom:6px}
+    .bc-type-name{font-size:.78rem;line-height:1.15;margin-bottom:0}
+    .bc-type-desc,.bc-effects{display:none}
+  }
   @media(min-width:601px) and (max-width:800px){ :root{--pv:2.4;--gap:14px}
     .bc-type-card{max-width:none} }
   @media(min-width:801px){  :root{--pv:3.2;--gap:18px;--edge:0px;--nug:158px} }
