@@ -7,7 +7,9 @@
 <style>
   :root{
     --green-dark:#2e7d32; --green:#4CAF50; --lime1:#8bc34a; --lime2:#7cb342;
-    --text:#333; --muted:#7a7a7a; --border:#e6ebe1; --page:#ffffff;
+    /* --muted was #7a7a7a = 4.29:1 on white, just under the 4.5:1 AA floor
+       for body text; #6f6f6f clears it at 5.02:1 and reads the same */
+    --text:#333; --muted:#6f6f6f; --border:#e6ebe1; --page:#ffffff;
     /* slider geometry — overridden per breakpoint */
     --edge:16px;   /* gutter before the first card */
     --gap:12px;    /* space between cards */
@@ -116,7 +118,11 @@
   .bc-arrow[disabled]{opacity:0;pointer-events:none}
   .bc-arrow--prev{left:-14px}
   .bc-arrow--next{right:-14px}
-  @media(hover:hover) and (pointer:fine) and (min-width:801px){ .bc-arrow{display:flex} }
+  /* .bc-js is set by the script — without JS the arrows would be inert, so
+     they stay hidden and the slider degrades to plain native scrolling */
+  @media(hover:hover) and (pointer:fine) and (min-width:801px){
+    .bc-js .bc-arrow{display:flex}
+  }
 
   /* ── scroll progress bar ─────────────────────────────────────── */
   .bc-slide-progress{height:3px;border-radius:99px;background:rgba(46,125,50,.12);
@@ -166,7 +172,7 @@
   <div class="bc-types-grid" role="group" aria-label="Shop cannabis by strain type and grade">
 
     <a class="bc-type-card indica" href="https://www.bulkcannabis.cc/product-category/cannabis/indica/">
-      <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-indica.png" alt="Frosty purple indica cannabis bud" loading="lazy" draggable="false"></div>
+      <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-indica-1.webp" alt="Frosty purple indica cannabis bud" loading="lazy" draggable="false"></div>
       <span class="bc-badge">Indica</span>
       <div class="bc-type-name">Indica</div>
       <div class="bc-type-desc">Heavy, body-first strains built for winding down.</div>
@@ -174,7 +180,7 @@
     </a>
 
     <a class="bc-type-card sativa" href="https://www.bulkcannabis.cc/product-category/cannabis/sativa/">
-      <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-sativa.png" alt="Frosty green sativa cannabis bud" loading="lazy" draggable="false"></div>
+      <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-sativa-1.webp" alt="Frosty green sativa cannabis bud" loading="lazy" draggable="false"></div>
       <span class="bc-badge">Sativa</span>
       <div class="bc-type-name">Sativa</div>
       <div class="bc-type-desc">Bright, cerebral strains for daytime energy and focus.</div>
@@ -182,7 +188,7 @@
     </a>
 
     <a class="bc-type-card hybrid" href="https://www.bulkcannabis.cc/product-category/cannabis/hybrid/">
-      <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-hybrid.png" alt="Frosty hybrid cannabis bud" loading="lazy" draggable="false"></div>
+      <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-hybrid-1.webp" alt="Frosty hybrid cannabis bud" loading="lazy" draggable="false"></div>
       <span class="bc-badge">Hybrid</span>
       <div class="bc-type-name">Hybrid</div>
       <div class="bc-type-desc">Balanced genetics — the best of both worlds.</div>
@@ -244,6 +250,8 @@
   var grid = document.querySelector('.bc-types-grid');
   var bar  = document.querySelector('.bc-slide-progress');
   if(!grid) return;
+  var root  = grid.closest('.bc-types') || document.body;
+  root.classList.add('bc-js');          // reveals the arrows; see CSS note
   var thumb = bar ? bar.querySelector('i') : null;
   var prev  = document.querySelector('.bc-arrow--prev');
   var next  = document.querySelector('.bc-arrow--next');
