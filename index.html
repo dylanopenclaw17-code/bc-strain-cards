@@ -49,7 +49,9 @@
     scroll-snap-align:start;
     background:#fff;border:1px solid var(--border);border-radius:16px;
     padding:22px 18px 24px;text-decoration:none;color:inherit;overflow:hidden;
-    box-shadow:0 7px 20px -4px var(--shade), 0 1px 3px rgba(20,40,15,.05);
+    /* inner glow, pooled at the top so it reinforces the halo behind the
+       art and leaves the text on clean white */
+    box-shadow:inset 0 34px 30px -30px var(--shade), 0 2px 10px rgba(20,40,15,.06);
     transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s;
   }
 
@@ -78,8 +80,10 @@
     /* drag affordance — mouse only; touch keeps native scrolling */
     .bc-types-grid{cursor:grab}
     .bc-types-grid.is-dragging{cursor:grabbing;user-select:none;-webkit-user-select:none}
-    .bc-types-grid.is-dragging .bc-type-card{transform:none;box-shadow:0 7px 20px -4px var(--shade)}
-    .bc-type-card:hover{transform:translateY(-6px);box-shadow:0 18px 30px -14px var(--shade);border-color:var(--accent)}
+    .bc-types-grid.is-dragging .bc-type-card{transform:none;
+      box-shadow:inset 0 34px 30px -30px var(--shade), 0 2px 10px rgba(20,40,15,.06)}
+    .bc-type-card:hover{transform:translateY(-6px);border-color:var(--accent);
+      box-shadow:inset 0 42px 34px -32px var(--shade), 0 16px 28px -14px rgba(20,40,15,.18)}
     .bc-type-card:hover .bc-nug::before{opacity:.75}
     .bc-type-card:hover .bc-nug img{transform:scale(1.06) rotate(-2deg)}
   }
