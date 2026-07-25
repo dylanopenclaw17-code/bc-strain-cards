@@ -54,16 +54,17 @@
     transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s;
   }
 
-  /* per-card accent: --halo tints the glow behind the art, --shade the
-     card shadow. With the badge gone this is what tells the cards apart. */
-  .bc-type-card.indica   {--accent:#7e57c2;--halo:rgba(126,87,194,.40);--shade:rgba(126,87,194,.55)}
-  .bc-type-card.sativa   {--accent:#ef9a3d;--halo:rgba(239,154,61,.40);--shade:rgba(239,154,61,.55)}
-  .bc-type-card.hybrid   {--accent:#66bb6a;--halo:rgba(102,187,106,.45);--shade:rgba(102,187,106,.55)}
-  .bc-type-card.topshelf {--accent:#c9a227;--halo:rgba(201,162,39,.38);--shade:rgba(201,162,39,.55)}
-  .bc-type-card.budget   {--accent:#2a9d8f;--halo:rgba(42,157,143,.35);--shade:rgba(42,157,143,.55)}
-  .bc-type-card.lso      {--accent:#8d6e63;--halo:rgba(141,110,99,.35);--shade:rgba(141,110,99,.55)}
-  .bc-type-card.smalls   {--accent:#5b8dbd;--halo:rgba(91,141,189,.35);--shade:rgba(91,141,189,.55)}
-  .bc-type-card.gas      {--accent:#d84315;--halo:rgba(216,67,21,.32);--shade:rgba(216,67,21,.55)}
+  /* per-card colour. --shade is deliberately a brighter, hue-separated
+     version of the accent: the muted accents (brown, gold, slate) all
+     washed out to the same pale tint once blurred into a glow. */
+  .bc-type-card.indica   {--accent:#7e57c2;--halo:rgba(126,87,194,.40);--shade:rgba(168,85,247,.42)}
+  .bc-type-card.sativa   {--accent:#ef9a3d;--halo:rgba(239,154,61,.40);--shade:rgba(251,146,60,.42)}
+  .bc-type-card.hybrid   {--accent:#66bb6a;--halo:rgba(102,187,106,.45);--shade:rgba(34,197,94,.42)}
+  .bc-type-card.topshelf {--accent:#c9a227;--halo:rgba(201,162,39,.38);--shade:rgba(250,204,21,.42)}
+  .bc-type-card.budget   {--accent:#2a9d8f;--halo:rgba(42,157,143,.35);--shade:rgba(45,212,191,.42)}
+  .bc-type-card.lso      {--accent:#8d6e63;--halo:rgba(141,110,99,.35);--shade:rgba(163,230,53,.42)}
+  .bc-type-card.smalls   {--accent:#5b8dbd;--halo:rgba(91,141,189,.35);--shade:rgba(96,165,250,.42)}
+  .bc-type-card.gas      {--accent:#d84315;--halo:rgba(216,67,21,.32);--shade:rgba(239,68,68,.42)}
 
   /* image slot — fixed height so every card’s art lines up */
   .bc-nug{position:relative;width:100%;height:var(--nug);flex:0 0 var(--nug);
@@ -99,14 +100,6 @@
   .bc-type-name{font-size:1.35rem;font-weight:800;color:var(--lime1);letter-spacing:-.01em;margin:4px 0 6px;line-height:1.2}
   .bc-type-desc{color:var(--muted);font-size:.88rem;line-height:1.5;margin-bottom:14px}
 
-  /* Pills follow the description by default. They're only bottom-anchored at
-     widths where every card wraps to the same number of pill rows (>=801px) —
-     anchoring them on narrow screens, where some cards wrap to 2 rows and some
-     to 1, strands a gap mid-card instead of at the card foot. */
-  .bc-effects{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-content:flex-start;margin-top:2px}
-  @media(min-width:801px){ .bc-effects{margin-top:auto} }
-  .bc-effects span{font-size:.7rem;font-weight:600;color:var(--green-dark);
-    background:rgba(139,195,74,.14);border:1px solid rgba(139,195,74,.4);padding:4px 11px;border-radius:100px}
 
   /* ── arrows (desktop / real pointers only) ───────────────────── */
   .bc-arrow{position:absolute;top:calc(var(--nug) / 2 + 6px);transform:translateY(-50%);
@@ -161,7 +154,6 @@
     /* description instead of the pill stack — same copy as desktop, sized
        fluidly so it stays readable in a 92-127px card */
     .bc-type-desc{font-size:clamp(.62rem,2.9vw,.78rem);line-height:1.35;margin-bottom:0}
-    .bc-effects{display:none}
   }
   @media(min-width:601px) and (max-width:800px){ :root{--pv:2.4;--gap:14px}
     .bc-type-card{max-width:none} }
@@ -197,56 +189,48 @@
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-indica-1.webp" alt="Frosty purple indica cannabis bud" loading="lazy" draggable="false"></div>
       <div class="bc-type-name">Indica</div>
       <div class="bc-type-desc">Heavy, body-first strains built for winding down.</div>
-      <div class="bc-effects"><span>Relaxing</span><span>Body-heavy</span><span>Evening</span></div>
     </a>
 
     <a class="bc-type-card sativa" href="https://www.bulkcannabis.cc/product-category/cannabis/sativa/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-sativa-1.webp" alt="Frosty green sativa cannabis bud" loading="lazy" draggable="false"></div>
       <div class="bc-type-name">Sativa</div>
       <div class="bc-type-desc">Bright, cerebral strains for daytime energy and focus.</div>
-      <div class="bc-effects"><span>Uplifting</span><span>Focus</span><span>Daytime</span></div>
     </a>
 
     <a class="bc-type-card hybrid" href="https://www.bulkcannabis.cc/product-category/cannabis/hybrid/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-hybrid-1.webp" alt="Frosty hybrid cannabis bud" loading="lazy" draggable="false"></div>
       <div class="bc-type-name">Hybrid</div>
       <div class="bc-type-desc">Balanced genetics — the best of both worlds.</div>
-      <div class="bc-effects"><span>Balanced</span><span>Versatile</span><span>Anytime</span></div>
     </a>
 
     <a class="bc-type-card topshelf" href="https://www.bulkcannabis.cc/product-category/cannabis/top-shelf-cannabis/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-topshelf.webp" alt="Cluster of large frosty top-shelf AAAA cannabis buds" loading="lazy" draggable="false"></div>
       <div class="bc-type-name">Top Shelf</div>
       <div class="bc-type-desc">Our frostiest, best-cured flower on the shelf.</div>
-      <div class="bc-effects"><span>AAAA</span><span>Hand-trimmed</span><span>Top terps</span></div>
     </a>
 
     <a class="bc-type-card budget" href="https://www.bulkcannabis.cc/product-category/cannabis/100-dollar-ounces/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-budget.webp" alt="Two dense budget-friendly cannabis buds" loading="lazy" draggable="false"></div>
       <div class="bc-type-name">Budget Buds</div>
       <div class="bc-type-desc">Solid everyday flower that stretches further.</div>
-      <div class="bc-effects"><span>Value</span><span>Ounce deals</span><span>Daily driver</span></div>
     </a>
 
     <a class="bc-type-card lso" href="https://www.bulkcannabis.cc/product-category/cannabis/lso/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-lso.webp" alt="Living soil organic cannabis buds with frosty trichomes" loading="lazy" draggable="false"></div>
       <div class="bc-type-name">Living Soil</div>
       <div class="bc-type-desc">Grown in living soil for richer terpenes.</div>
-      <div class="bc-effects"><span>Living soil</span><span>Small batch</span><span>Craft grown</span></div>
     </a>
 
     <a class="bc-type-card smalls" href="https://www.bulkcannabis.cc/product-category/cannabis/smalls/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-smalls.webp" alt="Pile of small popcorn cannabis nugs" loading="lazy" draggable="false"></div>
       <div class="bc-type-name">Smalls</div>
       <div class="bc-type-desc">Same genetics as our jars, just smaller nugs.</div>
-      <div class="bc-effects"><span>Small nugs</span><span>Same genetics</span><span>Best value</span></div>
     </a>
 
     <a class="bc-type-card gas" href="https://www.bulkcannabis.cc/product-category/cannabis/gas-strains/">
       <div class="bc-nug"><img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/strain-card-gas-pink-kush.webp" alt="Cluster of frosty Pink Kush gas strain cannabis buds" loading="lazy" draggable="false"></div>
       <div class="bc-type-name">Gas Strains</div>
       <div class="bc-type-desc">Loud, fuel-forward strains for terp chasers.</div>
-      <div class="bc-effects"><span>Pungent</span><span>Fuel terps</span><span>Loud</span></div>
     </a>
 
   </div>
