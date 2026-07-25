@@ -49,19 +49,20 @@
     scroll-snap-align:start;
     background:#fff;border:1px solid var(--border);border-radius:16px;
     padding:22px 18px 24px;text-decoration:none;color:inherit;overflow:hidden;
-    box-shadow:0 2px 10px rgba(20,40,15,.04);
+    box-shadow:0 7px 20px -4px var(--shade), 0 1px 3px rgba(20,40,15,.05);
     transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s;
   }
 
-  /* per-card accent — one variable drives badge, halo and icon */
-  .bc-type-card.indica   {--accent:#7e57c2;--halo:rgba(126,87,194,.40)}
-  .bc-type-card.sativa   {--accent:#ef9a3d;--halo:rgba(239,154,61,.40)}
-  .bc-type-card.hybrid   {--accent:#66bb6a;--halo:rgba(102,187,106,.45)}
-  .bc-type-card.topshelf {--accent:#c9a227;--halo:rgba(201,162,39,.38)}
-  .bc-type-card.budget   {--accent:#2a9d8f;--halo:rgba(42,157,143,.35)}
-  .bc-type-card.lso      {--accent:#8d6e63;--halo:rgba(141,110,99,.35)}
-  .bc-type-card.smalls   {--accent:#5b8dbd;--halo:rgba(91,141,189,.35)}
-  .bc-type-card.gas      {--accent:#d84315;--halo:rgba(216,67,21,.32)}
+  /* per-card accent: --halo tints the glow behind the art, --shade the
+     card shadow. With the badge gone this is what tells the cards apart. */
+  .bc-type-card.indica   {--accent:#7e57c2;--halo:rgba(126,87,194,.40);--shade:rgba(126,87,194,.55)}
+  .bc-type-card.sativa   {--accent:#ef9a3d;--halo:rgba(239,154,61,.40);--shade:rgba(239,154,61,.55)}
+  .bc-type-card.hybrid   {--accent:#66bb6a;--halo:rgba(102,187,106,.45);--shade:rgba(102,187,106,.55)}
+  .bc-type-card.topshelf {--accent:#c9a227;--halo:rgba(201,162,39,.38);--shade:rgba(201,162,39,.55)}
+  .bc-type-card.budget   {--accent:#2a9d8f;--halo:rgba(42,157,143,.35);--shade:rgba(42,157,143,.55)}
+  .bc-type-card.lso      {--accent:#8d6e63;--halo:rgba(141,110,99,.35);--shade:rgba(141,110,99,.55)}
+  .bc-type-card.smalls   {--accent:#5b8dbd;--halo:rgba(91,141,189,.35);--shade:rgba(91,141,189,.55)}
+  .bc-type-card.gas      {--accent:#d84315;--halo:rgba(216,67,21,.32);--shade:rgba(216,67,21,.55)}
 
   /* image slot — fixed height so every card’s art lines up */
   .bc-nug{position:relative;width:100%;height:var(--nug);flex:0 0 var(--nug);
@@ -77,8 +78,8 @@
     /* drag affordance — mouse only; touch keeps native scrolling */
     .bc-types-grid{cursor:grab}
     .bc-types-grid.is-dragging{cursor:grabbing;user-select:none;-webkit-user-select:none}
-    .bc-types-grid.is-dragging .bc-type-card{transform:none;box-shadow:0 2px 10px rgba(20,40,15,.04)}
-    .bc-type-card:hover{transform:translateY(-6px);box-shadow:0 16px 30px -12px rgba(46,125,50,.28);border-color:var(--lime1)}
+    .bc-types-grid.is-dragging .bc-type-card{transform:none;box-shadow:0 7px 20px -4px var(--shade)}
+    .bc-type-card:hover{transform:translateY(-6px);box-shadow:0 18px 30px -14px var(--shade);border-color:var(--accent)}
     .bc-type-card:hover .bc-nug::before{opacity:.75}
     .bc-type-card:hover .bc-nug img{transform:scale(1.06) rotate(-2deg)}
   }
