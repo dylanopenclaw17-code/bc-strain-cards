@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en-CA"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalog cards — BulkCannabis</title>
+<style>
+:root{
+  --ground:#DCE0DA; --stock:#FBFBF8; --ink:#11251E; --soft:#6C7A73;
+  --rate:#3E6B18; --rule:#C9D0C6;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);
+  padding:40px 20px 90px;-webkit-font-smoothing:antialiased}
+.sheet{max-width:1120px;margin:0 auto}
+
+.masthead{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:8px}
+.masthead h1{font-size:1.45rem;font-weight:800;letter-spacing:-.02em}
+.masthead p{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--soft);margin-top:6px}
+.legend{font-size:.88rem;line-height:1.65;color:#3d4c45;max-width:640px;margin:20px 0 30px}
+.legend b{color:var(--ink)}
+
+.rack{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:860px){.rack{grid-template-columns:repeat(2,1fr);gap:14px}}
+@media(max-width:420px){.rack{grid-template-columns:1fr}}
+
+/* ---- the tag ---- */
+.tag{background:var(--stock);border:1px solid var(--rule);border-radius:3px;
+  display:flex;flex-direction:column;position:relative;
+  box-shadow:0 1px 0 rgba(17,37,30,.05);transition:box-shadow .25s,transform .25s}
+@media(hover:hover){.tag:hover{transform:translateY(-3px);box-shadow:0 12px 22px -14px rgba(17,37,30,.45)}}
+
+.tag-shot{display:block;height:184px;padding:14px 14px 6px;background:#fff}
+.tag-shot img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+
+/* perforation: the card is a label torn off the bag */
+.tag-perf{height:0;border-top:1px dashed var(--rule);position:relative}
+.tag-perf::before,.tag-perf::after{content:"";position:absolute;top:-6px;width:11px;height:11px;
+  border-radius:50%;background:var(--ground);border:1px solid var(--rule)}
+.tag-perf::before{left:-6px}
+.tag-perf::after{right:-6px}
+
+.tag-body{padding:16px 15px 15px;display:flex;flex-direction:column;flex:1}
+
+.tag-stamps{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.stamp{font-family:var(--mono);font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;
+  border:1.5px solid var(--ink);border-radius:2px;padding:2px 6px;color:var(--ink)}
+.strain{font-family:var(--mono);font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--soft);display:inline-flex;align-items:center;gap:5px}
+.strain i{width:7px;height:7px;background:var(--type);border-radius:1px;display:block}
+
+.tag-name{font-size:1.12rem;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:11px}
+.tag-name a{color:var(--ink);text-decoration:none}
+.tag-name a:hover{text-decoration:underline;text-underline-offset:3px}
+
+.tag-spec{display:flex;gap:22px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:8px 0;margin-bottom:14px}
+.tag-spec div{display:flex;flex-direction:column;gap:2px}
+.tag-spec dt{font-family:var(--mono);font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;color:var(--soft)}
+.tag-spec dd{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.tag-spec dd span{color:var(--soft);font-weight:400}
+
+/* ---- signature: the rate ladder ---- */
+.rate{margin-top:auto}
+.rate-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:7px}
+.rate-lab{font-family:var(--mono);font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;color:var(--soft)}
+.rate-now{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--rate);line-height:1;
+  display:flex;align-items:baseline;gap:6px}
+.rate-now span{font-size:.58rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+
+.ladder{display:flex;align-items:flex-end;gap:5px;height:64px}
+.rung{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
+.rung-track{flex:1;width:100%;display:flex;align-items:flex-end}
+.rung-track i{display:block;width:100%;background:#C3CFB6;border-radius:1px 1px 0 0}
+.rung.is-floor .rung-track i{background:var(--rate)}
+.rung-size{font-family:var(--mono);font-size:.56rem;color:var(--soft);letter-spacing:.03em}
+.rung.is-floor .rung-size{color:var(--rate);font-weight:700}
+
+.rate-foot{font-family:var(--mono);font-size:.62rem;color:var(--soft);margin-top:9px;letter-spacing:.02em}
+.rate-foot b{color:var(--ink);font-weight:700}
+
+.tag-go{margin-top:13px;display:block;text-align:center;background:var(--ink);color:var(--stock);
+  text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:.04em;padding:11px;border-radius:2px;
+  transition:background .2s}
+.tag-go:hover{background:var(--rate)}
+
+a:focus-visible,.tag-go:focus-visible{outline:2px solid var(--rate);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.foot{font-family:var(--mono);font-size:.66rem;color:var(--soft);line-height:1.8;
+  margin-top:46px;border-top:1px solid var(--rule);padding-top:16px}
+</style></head><body>
+<div class="sheet">
+  <div class="masthead">
+    <h1>Catalog cards</h1>
+    <p>Concept &mdash; live product data &mdash; nothing published</p>
+  </div>
+  <p class="legend">A bulk buyer is not browsing, they are comparing rates. So the card is built like the
+  label on the bag: everything measurable is set in monospace, the strain name is the only thing that
+  isn&rsquo;t, and the <b>rate ladder</b> shows what a gram costs at each weight. Prices are pulled from the
+  live variations, so the drop you see is the real one.</p>
+  <div class="rack">
+<article class="tag" style="--type:#6B4FA8">
+  <a class="tag-shot" href="#" tabindex="-1" aria-hidden="true">
+    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/06/black-tuna-cannabis-nug.png" alt="" loading="lazy">
+  </a>
+  <div class="tag-perf" aria-hidden="true"></div>
+  <div class="tag-body">
+    <div class="tag-stamps">
+      <span class="stamp">Gas Strains</span>
+      <span class="strain"><i></i>Indica</span>
+    </div>
+    <h3 class="tag-name"><a href="#">Black Tuna</a></h3>
+    <dl class="tag-spec">
+      <div><dt>THC</dt><dd>25.00-28.00%</dd></div>
+      <div><dt>Rated</dt><dd><span>not yet rated</span></dd></div>
+    </dl>
+    <div class="rate">
+      <div class="rate-head">
+        <span class="rate-lab">Rate per gram</span>
+        <span class="rate-now">$4.29<span>at 28g</span></span>
+      </div>
+      <div class="ladder" role="img"
+           aria-label="Price per gram falls from $7.43 at 3.5g to $4.29 at 28g"><div class="rung"><div class="rung-track"><i style="height:100%"></i></div><span class="rung-size">3.5g</span></div><div class="rung"><div class="rung-track"><i style="height:77%"></i></div><span class="rung-size">7g</span></div><div class="rung"><div class="rung-track"><i style="height:49%"></i></div><span class="rung-size">14g</span></div><div class="rung is-floor"><div class="rung-track"><i style="height:28%"></i></div><span class="rung-size">28g</span></div></div>
+      <p class="rate-foot">from <b>$26</b> &middot; <b>$7.43</b> at 3.5g &rarr; <b>$4.29</b> at 28g</p>
+    </div>
+    <a class="tag-go" href="#">Choose weight</a>
+  </div>
+</article>
+<article class="tag" style="--type:#6B4FA8">
+  <a class="tag-shot" href="#" tabindex="-1" aria-hidden="true">
+    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2025/04/mike-tyson-og-nug.png" alt="" loading="lazy">
+  </a>
+  <div class="tag-perf" aria-hidden="true"></div>
+  <div class="tag-body">
+    <div class="tag-stamps">
+      <span class="stamp">Gas Strains</span>
+      <span class="strain"><i></i>Indica</span>
+    </div>
+    <h3 class="tag-name"><a href="#">Mike Tyson OG</a></h3>
+    <dl class="tag-spec">
+      <div><dt>THC</dt><dd>28.00-32.00%</dd></div>
+      <div><dt>Rated</dt><dd>5.0<span>/5</span></dd></div>
+    </dl>
+    <div class="rate">
+      <div class="rate-head">
+        <span class="rate-lab">Rate per gram</span>
+        <span class="rate-now">$4.64<span>at 28g</span></span>
+      </div>
+      <div class="ladder" role="img"
+           aria-label="Price per gram falls from $8.00 at 3.5g to $4.64 at 28g"><div class="rung"><div class="rung-track"><i style="height:100%"></i></div><span class="rung-size">3.5g</span></div><div class="rung"><div class="rung-track"><i style="height:69%"></i></div><span class="rung-size">7g</span></div><div class="rung"><div class="rung-track"><i style="height:40%"></i></div><span class="rung-size">14g</span></div><div class="rung is-floor"><div class="rung-track"><i style="height:28%"></i></div><span class="rung-size">28g</span></div></div>
+      <p class="rate-foot">from <b>$28</b> &middot; <b>$8.00</b> at 3.5g &rarr; <b>$4.64</b> at 28g</p>
+    </div>
+    <a class="tag-go" href="#">Choose weight</a>
+  </div>
+</article>
+<article class="tag" style="--type:#6B4FA8">
+  <a class="tag-shot" href="#" tabindex="-1" aria-hidden="true">
+    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/pine-tar-cannabis-nug-1.png" alt="" loading="lazy">
+  </a>
+  <div class="tag-perf" aria-hidden="true"></div>
+  <div class="tag-body">
+    <div class="tag-stamps">
+      <span class="stamp">Gas Strains</span>
+      <span class="strain"><i></i>Indica</span>
+    </div>
+    <h3 class="tag-name"><a href="#">Pine Tar</a></h3>
+    <dl class="tag-spec">
+      <div><dt>THC</dt><dd>24.00-28.00%</dd></div>
+      <div><dt>Rated</dt><dd>5.0<span>/3</span></dd></div>
+    </dl>
+    <div class="rate">
+      <div class="rate-head">
+        <span class="rate-lab">Rate per gram</span>
+        <span class="rate-now">$4.64<span>at 28g</span></span>
+      </div>
+      <div class="ladder" role="img"
+           aria-label="Price per gram falls from $8.00 at 3.5g to $4.64 at 28g"><div class="rung"><div class="rung-track"><i style="height:100%"></i></div><span class="rung-size">3.5g</span></div><div class="rung"><div class="rung-track"><i style="height:69%"></i></div><span class="rung-size">7g</span></div><div class="rung"><div class="rung-track"><i style="height:40%"></i></div><span class="rung-size">14g</span></div><div class="rung is-floor"><div class="rung-track"><i style="height:28%"></i></div><span class="rung-size">28g</span></div></div>
+      <p class="rate-foot">from <b>$28</b> &middot; <b>$8.00</b> at 3.5g &rarr; <b>$4.64</b> at 28g</p>
+    </div>
+    <a class="tag-go" href="#">Choose weight</a>
+  </div>
+</article>
+<article class="tag" style="--type:#3E6B18">
+  <a class="tag-shot" href="#" tabindex="-1" aria-hidden="true">
+    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/blue-nerds-cannabis-nug.png" alt="" loading="lazy">
+  </a>
+  <div class="tag-perf" aria-hidden="true"></div>
+  <div class="tag-body">
+    <div class="tag-stamps">
+      <span class="stamp">Top Shelf</span>
+      <span class="strain"><i></i>Hybrid</span>
+    </div>
+    <h3 class="tag-name"><a href="#">Blue Nerds</a></h3>
+    <dl class="tag-spec">
+      <div><dt>THC</dt><dd>24.00-27.00%</dd></div>
+      <div><dt>Rated</dt><dd>5.0<span>/1</span></dd></div>
+    </dl>
+    <div class="rate">
+      <div class="rate-head">
+        <span class="rate-lab">Rate per gram</span>
+        <span class="rate-now">$4.29<span>at 28g</span></span>
+      </div>
+      <div class="ladder" role="img"
+           aria-label="Price per gram falls from $7.14 at 3.5g to $4.29 at 28g"><div class="rung"><div class="rung-track"><i style="height:100%"></i></div><span class="rung-size">3.5g</span></div><div class="rung"><div class="rung-track"><i style="height:82%"></i></div><span class="rung-size">7g</span></div><div class="rung"><div class="rung-track"><i style="height:46%"></i></div><span class="rung-size">14g</span></div><div class="rung is-floor"><div class="rung-track"><i style="height:28%"></i></div><span class="rung-size">28g</span></div></div>
+      <p class="rate-foot">from <b>$25</b> &middot; <b>$7.14</b> at 3.5g &rarr; <b>$4.29</b> at 28g</p>
+    </div>
+    <a class="tag-go" href="#">Choose weight</a>
+  </div>
+</article>
+<article class="tag" style="--type:#6B4FA8">
+  <a class="tag-shot" href="#" tabindex="-1" aria-hidden="true">
+    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/astro-pink-cannabis-nug-1.png" alt="" loading="lazy">
+  </a>
+  <div class="tag-perf" aria-hidden="true"></div>
+  <div class="tag-body">
+    <div class="tag-stamps">
+      <span class="stamp">Gas Strains</span>
+      <span class="strain"><i></i>Indica</span>
+    </div>
+    <h3 class="tag-name"><a href="#">Astro Pink</a></h3>
+    <dl class="tag-spec">
+      <div><dt>THC</dt><dd>22.00-28.00%</dd></div>
+      <div><dt>Rated</dt><dd>4.96<span>/26</span></dd></div>
+    </dl>
+    <div class="rate">
+      <div class="rate-head">
+        <span class="rate-lab">Rate per gram</span>
+        <span class="rate-now">$4.64<span>at 28g</span></span>
+      </div>
+      <div class="ladder" role="img"
+           aria-label="Price per gram falls from $8.00 at 3.5g to $4.64 at 28g"><div class="rung"><div class="rung-track"><i style="height:100%"></i></div><span class="rung-size">3.5g</span></div><div class="rung"><div class="rung-track"><i style="height:72%"></i></div><span class="rung-size">7g</span></div><div class="rung"><div class="rung-track"><i style="height:40%"></i></div><span class="rung-size">14g</span></div><div class="rung is-floor"><div class="rung-track"><i style="height:28%"></i></div><span class="rung-size">28g</span></div></div>
+      <p class="rate-foot">from <b>$28</b> &middot; <b>$8.00</b> at 3.5g &rarr; <b>$4.64</b> at 28g</p>
+    </div>
+    <a class="tag-go" href="#">Choose weight</a>
+  </div>
+</article>
+<article class="tag" style="--type:#3E6B18">
+  <a class="tag-shot" href="#" tabindex="-1" aria-hidden="true">
+    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2024/02/krazy-runts-nugs.png" alt="" loading="lazy">
+  </a>
+  <div class="tag-perf" aria-hidden="true"></div>
+  <div class="tag-body">
+    <div class="tag-stamps">
+      <span class="stamp">Top Shelf</span>
+      <span class="strain"><i></i>Hybrid</span>
+    </div>
+    <h3 class="tag-name"><a href="#">Krazy Runtz</a></h3>
+    <dl class="tag-spec">
+      <div><dt>THC</dt><dd>25.00-27.00%</dd></div>
+      <div><dt>Rated</dt><dd>5.0<span>/1</span></dd></div>
+    </dl>
+    <div class="rate">
+      <div class="rate-head">
+        <span class="rate-lab">Rate per gram</span>
+        <span class="rate-now">$4.64<span>at 28g</span></span>
+      </div>
+      <div class="ladder" role="img"
+           aria-label="Price per gram falls from $8.00 at 3.5g to $4.64 at 28g"><div class="rung"><div class="rung-track"><i style="height:100%"></i></div><span class="rung-size">3.5g</span></div><div class="rung"><div class="rung-track"><i style="height:69%"></i></div><span class="rung-size">7g</span></div><div class="rung"><div class="rung-track"><i style="height:40%"></i></div><span class="rung-size">14g</span></div><div class="rung is-floor"><div class="rung-track"><i style="height:28%"></i></div><span class="rung-size">28g</span></div></div>
+      <p class="rate-foot">from <b>$28</b> &middot; <b>$8.00</b> at 3.5g &rarr; <b>$4.64</b> at 28g</p>
+    </div>
+    <a class="tag-go" href="#">Choose weight</a>
+  </div>
+</article>
+  </div>
+  <p class="foot">
+    Ladder bars are scaled across each product&rsquo;s own range so the fall is legible, not plotted from zero.<br>
+    The exact rates are printed under every ladder. The moss bar is the floor rate.<br>
+    Product photography is the current catalogue imagery, watermark included.
+  </p>
+</div></body></html>
