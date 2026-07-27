@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Drops at Bulk Cannabis</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; max-width: 100%; height: auto; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9;
+            font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            background: linear-gradient(180deg, #0d1117 0%, #1a1a2e 100%);
+            padding: 30px 20px 25px 20px;
+            text-align: center;
+        }
+
+        .new-drops-badge {
+            display: inline-block;
+            color: #ffffff;
+            padding: 0;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .new-drops-sub {
+            display: block;
+            color: #44ba5d;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .main-content {
+            padding: 20px 10px;
+            background-color: #dae9ef;
+        }
+
+        .intro-text {
+            color: #333333;
+            font-size: 15px;
+            line-height: 1.7;
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 0 15px;
+        }
+
+        .intro-text strong {
+            color: #2d8f42;
+        }
+
+        .highlight-box {
+            background-color: #ffffff;
+            border: 1px solid #c8e6c9;
+            border-radius: 12px;
+            padding: 14px;
+            margin: 15px 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .highlight-text {
+            color: #2d8f42;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .product-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 0;
+            border: 1px solid #e0e0e0;
+            border-top: 3px solid #44ba5d;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .product-image-link {
+            display: block;
+            text-decoration: none;
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            margin-bottom: 0;
+            background-color: #f5f5f5;
+        }
+
+        .card-body {
+            padding: 10px 12px 12px 12px;
+        }
+
+        .product-name {
+            color: #1a1a2e;
+            font-size: 14px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+        }
+
+        .product-type {
+            display: inline-block;
+            background-color: #ede7f6;
+            color: #5e35b1;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .grade-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .product-stats {
+            margin: 6px 0;
+        }
+
+        .stat {
+            color: #888888;
+            font-size: 11px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .stat strong {
+            color: #1a1a2e;
+            font-size: 12px;
+        }
+
+        .product-tags {
+            margin: 6px 0;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 3px;
+            margin-bottom: 3px;
+        }
+
+        .card-divider {
+            border: none;
+            border-top: 1px solid #eeeeee;
+            margin: 8px 0;
+        }
+
+        .product-price {
+            color: #1a1a2e;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 6px 0 10px 0;
+        }
+
+        .product-price span {
+            color: #999999;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .shop-button {
+            display: block;
+            background: linear-gradient(90deg, #44ba5d, #2d8f42);
+            color: #ffffff;
+            padding: 10px 15px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Restock */
+        .restock-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-top: 3px solid #e94560;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .restock-pill {
+            display: inline-block;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            color: #ffffff;
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(233,69,96,0.3);
+        }
+
+        .restock-name {
+            color: #1a1a2e;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 10px 0 6px 0;
+        }
+
+        .restock-copy {
+            color: #555555;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0 0 12px 0;
+        }
+
+        .restock-cta {
+            display: inline-block;
+            background: linear-gradient(90deg, #44ba5d, #2d8f42);
+            color: #ffffff;
+            padding: 12px 28px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 22px;
+        }
+
+        /* Spotlight */
+        .spotlight-section {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 0;
+            margin: 25px 15px;
+            overflow: hidden;
+            border: 2px solid #44ba5d;
+            box-shadow: 0 4px 15px rgba(68,186,93,0.15);
+        }
+
+        .spotlight-header {
+            background: linear-gradient(90deg, #44ba5d, #2d8f42);
+            padding: 14px 20px;
+            text-align: center;
+        }
+
+        .spotlight-header-text {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        .spotlight-content {
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        .spotlight-badge-row {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .spotlight-badge {
+            display: inline-block;
+            background-color: #44ba5d;
+            color: #ffffff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 4px 4px 4px;
+        }
+
+        .spotlight-badge.gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .spotlight-description {
+            color: #555555;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .gift-card {
+            background-color: #f0f7f0;
+            border: 1px solid #c8e6c9;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .gift-image {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            display: block;
+            background-color: #f5f5f5;
+        }
+
+        .gift-name {
+            color: #1a1a2e;
+            font-size: 14px;
+            font-weight: 800;
+            margin: 0 0 4px 0;
+            line-height: 1.3;
+        }
+
+        .gift-meta {
+            color: #777777;
+            font-size: 11px;
+            margin: 0 0 6px 0;
+        }
+
+        .gift-value {
+            color: #2d8f42;
+            font-size: 16px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .gift-value span {
+            color: #999999;
+            font-size: 11px;
+            font-weight: 400;
+            text-decoration: line-through;
+        }
+
+        .spotlight-cta {
+            display: block;
+            background: linear-gradient(90deg, #44ba5d, #2d8f42);
+            color: #ffffff;
+            padding: 15px 30px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(68, 186, 93, 0.3);
+        }
+
+        .cta-section {
+            padding: 20px;
+            text-align: center;
+            background-color: #dae9ef;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #44ba5d, #2d8f42);
+            color: #ffffff;
+            padding: 15px 40px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(68, 186, 93, 0.3);
+        }
+
+        .footer {
+            background-color: #1a1a2e;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .footer-text {
+            color: #999999;
+            font-size: 11px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            margin-bottom: 15px;
+        }
+
+        .social-link {
+            display: inline-block;
+            margin: 0 8px;
+            color: #44ba5d;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .unsubscribe {
+            color: #666666;
+            font-size: 10px;
+        }
+
+        .unsubscribe a {
+            color: #999999;
+            text-decoration: underline;
+        }
+
+        /* Desktop */
+        @media screen and (min-width: 600px) {
+            .product-col { width: 33.33% !important; }
+        }
+
+        /* Mobile: 2 columns */
+        @media screen and (max-width: 599px) {
+            .product-col { width: 50% !important; }
+            .product-image { aspect-ratio: 1/1; }
+            .restock-name { font-size: 19px; }
+        }
+    </style>
+</head>
+<body>
+    <table role="presentation" class="email-wrapper" cellpadding="0" cellspacing="0">
+        <!-- Header -->
+        <tr>
+            <td class="header">
+                <a href="https://www.bulkcannabis.cc" style="text-decoration:none;">
+                    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/03/bcbulk-bear-logo.png" alt="BCBulk" style="max-width: 200px; height: auto; display: block; margin: 0 auto 12px auto;">
+                </a>
+                <div class="new-drops-badge">3 New Drops</div>
+                <span class="new-drops-sub">Fresh strains just landed</span>
+            </td>
+        </tr>
+
+        <!-- Main Content -->
+        <tr>
+            <td class="main-content">
+                <p class="intro-text">
+                    Three fresh jars on the shelf this week &#8212; and the <strong>Bubble Hash is finally back</strong>. Top of the list is <strong>Black Tuna</strong>, living soil and top shelf, sitting at 25&#8211;28%. Under it, two smalls that punch well above what you pay for them.
+                </p>
+
+                <div class="highlight-box">
+                    <p class="highlight-text">Black Tuna is LSO Top Shelf &nbsp;|&nbsp; Smalls from $70/oz &nbsp;|&nbsp; 2 Free Ounces at $300+</p>
+                </div>
+
+                <!-- Product Grid Row 1 -->
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <!-- Product 1: Black Tuna -->
+                        <td class="product-col" width="50%" valign="top" style="padding: 5px;">
+                            <div class="product-card">
+                                <a href="https://www.bulkcannabis.cc/product/black-tuna/" class="product-image-link">
+                                    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/06/black-tuna-cannabis-nug-400x400.png" alt="Black Tuna cannabis nug, dense dark green bud with orange hairs" class="product-image">
+                                </a>
+                                <div class="card-body">
+                                    <h3 class="product-name">Black Tuna</h3>
+                                    <span class="product-type">Indica</span>
+                                    <span class="grade-badge">AAAA</span>
+                                    <span style="display: inline-block; background-color: rgba(45, 143, 66, 0.12); color: #2d8f42; padding: 3px 8px; border-radius: 15px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">LSO</span>
+                                    <div class="product-stats">
+                                        <span class="stat">THC <strong>25-28%</strong></span>
+                                    </div>
+                                    <div class="product-tags">
+                                        <span class="tag">Sweet</span>
+                                        <span class="tag">Earthy</span>
+                                        <span class="tag">Pine</span>
+                                    </div>
+                                    <hr class="card-divider">
+                                    <p class="product-price">$120<span>/28g</span></p>
+                                    <a href="https://www.bulkcannabis.cc/product/black-tuna/" class="shop-button">Shop Now</a>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Product 2: Gucci Pink Smalls -->
+                        <td class="product-col" width="50%" valign="top" style="padding: 5px;">
+                            <div class="product-card">
+                                <a href="https://www.bulkcannabis.cc/product/gucci-pink-smalls/" class="product-image-link">
+                                    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2025/12/cannabis-strain-gucci-pink-400x400.png" alt="Gucci Pink smalls cannabis buds, pink-tinged popcorn nugs" class="product-image">
+                                </a>
+                                <div class="card-body">
+                                    <h3 class="product-name">Gucci Pink (Smalls)</h3>
+                                    <span class="product-type">Indica</span>
+                                    <span class="grade-badge">AAAA</span>
+                                    <div class="product-stats">
+                                        <span class="stat">THC <strong>23-26%</strong></span>
+                                    </div>
+                                    <div class="product-tags">
+                                        <span class="tag">Sweet</span>
+                                        <span class="tag">Pine</span>
+                                        <span class="tag">Earthy</span>
+                                    </div>
+                                    <hr class="card-divider">
+                                    <p class="product-price">$80<span>/28g</span></p>
+                                    <a href="https://www.bulkcannabis.cc/product/gucci-pink-smalls/" class="shop-button">Shop Now</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Product Grid Row 2 -->
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 10px;">
+                    <tr>
+                        <!-- Product 3: Cream Soda Smalls -->
+                        <td class="product-col" width="50%" valign="top" style="padding: 5px;">
+                            <div class="product-card">
+                                <a href="https://www.bulkcannabis.cc/product/cream-soda-smalls/" class="product-image-link">
+                                    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/cream-soda-strain-3-400x400.png" alt="Cream Soda smalls cannabis buds, frosty light green popcorn nugs" class="product-image">
+                                </a>
+                                <div class="card-body">
+                                    <h3 class="product-name">Cream Soda (Smalls)</h3>
+                                    <span class="product-type">Indica</span>
+                                    <span class="grade-badge">AAA+</span>
+                                    <div class="product-stats">
+                                        <span class="stat">THC <strong>20-23%</strong></span>
+                                    </div>
+                                    <div class="product-tags">
+                                        <span class="tag">Vanilla</span>
+                                        <span class="tag">Gassy</span>
+                                        <span class="tag">Spice</span>
+                                    </div>
+                                    <hr class="card-divider">
+                                    <p class="product-price">$70<span>/28g</span></p>
+                                    <a href="https://www.bulkcannabis.cc/product/cream-soda-smalls/" class="shop-button">Shop Now</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="product-col" width="50%" valign="top" style="padding: 5px;">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- BUBBLE HASH RESTOCK -->
+        <tr>
+            <td style="background-color: #dae9ef; padding: 5px 15px 5px 15px;">
+                <div class="restock-card">
+                    <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td width="40%" valign="top" style="padding: 0;">
+                                <a href="https://www.bulkcannabis.cc/product/bubble-hash/" style="text-decoration:none;">
+                                    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/01/bubble-hash-slab-400x400.png" alt="Slab of ice water extracted bubble hash, dark golden brown" style="width: 100%; height: auto; display: block; background-color: #f5f5f5;">
+                                </a>
+                            </td>
+                            <td width="60%" valign="top" style="padding: 16px 16px 16px 14px;">
+                                <span class="restock-pill">Back In Stock</span>
+                                <h3 class="restock-name">Bubble Hash</h3>
+                                <p class="restock-copy">
+                                    Ice water extraction, made in Canada, and it went fast last time. Hard and sticky at <strong style="color:#1a1a2e;">55&#8211;60% THC</strong>, in 3.5g through to full ounces.
+                                </p>
+                                <p style="margin: 0 0 12px 0; color:#1a1a2e; font-size: 20px; font-weight: 800;">From $40<span style="color:#999999; font-size:12px; font-weight:400;">/3.5g</span></p>
+                                <a href="https://www.bulkcannabis.cc/product/bubble-hash/" class="restock-cta">Grab It</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+
+        <!-- MIX & MATCH SECTION -->
+        <tr>
+            <td style="background-color: #dae9ef; padding: 25px 15px 10px 15px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td style="text-align: center; padding-bottom: 4px;">
+                            <span style="font-family: 'Montserrat', Arial, sans-serif; font-size: 22px; font-weight: 800; color: #1a1a2e; letter-spacing: 2px; text-transform: uppercase;">MIX &amp; MATCH</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; padding-bottom: 18px;">
+                            <p style="margin: 0; font-family: 'Montserrat', Arial, sans-serif; font-size: 13px; color: #555555; line-height: 20px;">Build your perfect stash. Pick your strains, save big.</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <!-- Flower Bundle -->
+                        <td width="50%" valign="top" style="padding: 0 5px 15px 0;">
+                            <div style="background: linear-gradient(160deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%); border-radius: 14px; overflow: hidden; border: 1px solid #2a2a4a; box-shadow: 0 6px 20px rgba(0,0,0,0.15);">
+                                <a href="https://www.bulkcannabis.cc/product/ounce-mix-and-match/" style="text-decoration: none;">
+                                    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2024/01/ounce-mix-and-match-400x400.png" alt="Ounce Mix and Match" style="width: 100%; height: auto; display: block;">
+                                </a>
+                                <div style="padding: 14px;">
+                                    <div style="text-align: center; margin-bottom: 10px;">
+                                        <span style="display: inline-block; background: linear-gradient(90deg, #e94560, #ff6b6b); color: #ffffff; padding: 4px 14px; border-radius: 20px; font-family: 'Montserrat', Arial, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 2px 8px rgba(233,69,96,0.3);">SAVE UP TO 25%</span>
+                                    </div>
+                                    <h3 style="margin: 0 0 6px 0; font-family: 'Montserrat', Arial, sans-serif; font-size: 15px; font-weight: 800; color: #ffffff; text-align: center; line-height: 20px;">Oz Flower<br>Mix &amp; Match</h3>
+                                    <p style="margin: 0 0 14px 0; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; color: #a0a0a0; text-align: center; line-height: 16px; min-height: 32px;">Pick any 4 quarter ounces to build your perfect custom oz</p>
+                                    <a href="https://www.bulkcannabis.cc/product/ounce-mix-and-match/" style="display: block; background: linear-gradient(90deg, #44ba5d, #2d8f42); color: #ffffff; padding: 10px 15px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; border-radius: 20px; text-align: center;">Build Your Oz</a>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Live Resin Bundle -->
+                        <td width="50%" valign="top" style="padding: 0 0 15px 5px;">
+                            <div style="background: linear-gradient(160deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%); border-radius: 14px; overflow: hidden; border: 1px solid #2a2a4a; box-shadow: 0 6px 20px rgba(0,0,0,0.15);">
+                                <a href="https://www.bulkcannabis.cc/product/ounce-live-resin-bundle/" style="text-decoration: none;">
+                                    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2025/03/live-resin-ounce-mix-and-match-400x400.png" alt="Ounce Live Resin Bundle" style="width: 100%; height: auto; display: block;">
+                                </a>
+                                <div style="padding: 14px;">
+                                    <div style="text-align: center; margin-bottom: 10px;">
+                                        <span style="display: inline-block; background: linear-gradient(90deg, #e94560, #ff6b6b); color: #ffffff; padding: 4px 14px; border-radius: 20px; font-family: 'Montserrat', Arial, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 2px 8px rgba(233,69,96,0.3);">30% OFF</span>
+                                    </div>
+                                    <h3 style="margin: 0 0 6px 0; font-family: 'Montserrat', Arial, sans-serif; font-size: 15px; font-weight: 800; color: #ffffff; text-align: center; line-height: 20px;">Oz Live Resin<br>Bundle</h3>
+                                    <p style="margin: 0 0 14px 0; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; color: #a0a0a0; text-align: center; line-height: 16px; min-height: 32px;">Pick 4 strains x 7g each for 28g of premium live resin</p>
+                                    <a href="https://www.bulkcannabis.cc/product/ounce-live-resin-bundle/" style="display: block; background: linear-gradient(90deg, #44ba5d, #2d8f42); color: #ffffff; padding: 10px 15px; font-family: 'Montserrat', Arial, sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; border-radius: 20px; text-align: center;">Build Your Oz</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Spotlight: Two Free Ounces -->
+        <tr>
+            <td style="background-color: #dae9ef; padding: 0;">
+                <div class="spotlight-section">
+                    <div class="spotlight-header">
+                        <p class="spotlight-header-text">Two Free Ounces</p>
+                    </div>
+                    <div class="spotlight-content">
+                        <div class="spotlight-badge-row">
+                            <span class="spotlight-badge gold">Gold Tier</span>
+                            <span class="spotlight-badge">$300+ Orders</span>
+                        </div>
+                        <p class="spotlight-description">
+                            Hit $300 and you're picking <strong style="color:#2d8f42;">two free ounces</strong> at checkout &#8212; a Pre-98 Bubba and a MAC#1, both smalls. That's $140 of flower riding along with the order.
+                        </p>
+
+                        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 16px;">
+                            <tr>
+                                <td width="50%" valign="top" style="padding: 0 5px 0 0;">
+                                    <div class="gift-card">
+                                        <a href="https://www.bulkcannabis.cc/product/pre-98-bubba-smalls/" style="text-decoration:none;">
+                                            <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/07/pre-98-bubba-cannabis-strain-400x400.png" alt="Pre-98 Bubba smalls cannabis buds" class="gift-image">
+                                        </a>
+                                        <div style="padding: 12px;">
+                                            <h3 class="gift-name">Pre-98 Bubba</h3>
+                                            <p class="gift-meta">Indica &middot; AAA &middot; 21-24% THC</p>
+                                            <p class="gift-value">FREE <span>$70</span></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="50%" valign="top" style="padding: 0 0 0 5px;">
+                                    <div class="gift-card">
+                                        <a href="https://www.bulkcannabis.cc/product/mac1-smalls/" style="text-decoration:none;">
+                                            <img src="https://www.bulkcannabis.cc/wp-content/uploads/2026/06/mac1-cannabis-strain-smalls-1-400x400.png" alt="MAC#1 smalls cannabis buds" class="gift-image">
+                                        </a>
+                                        <div style="padding: 12px;">
+                                            <h3 class="gift-name">MAC#1</h3>
+                                            <p class="gift-meta">Hybrid &middot; AAA+ &middot; 22-25% THC</p>
+                                            <p class="gift-value">FREE <span>$70</span></p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <a href="https://www.bulkcannabis.cc/shop/" class="spotlight-cta">Claim Both Ounces</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <!-- CTA Section -->
+        <tr>
+            <td class="cta-section">
+                <a href="https://www.bulkcannabis.cc/shop/" class="cta-button">Shop All New Drops</a>
+            </td>
+        </tr>
+
+        <!-- Promo Code Banner -->
+        <tr>
+            <td style="background-color: #dae9ef; padding: 0 15px 20px 15px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background: linear-gradient(135deg, #2d8f42 0%, #44ba5d 50%, #2d8f42 100%); border-radius: 12px;">
+                    <tr>
+                        <td style="padding: 22px 20px; text-align: center;">
+                            <p style="margin: 0 0 4px 0; font-size: 12px; font-weight: 500; color: #ffffff; letter-spacing: 1px; line-height: 16px;">JOIN THE DISCORD &amp; USE CODE</p>
+                            <p style="margin: 0 0 4px 0; font-size: 28px; font-weight: 800; color: #ffffff; letter-spacing: 2px; line-height: 34px;">BULKCREW10</p>
+                            <p style="margin: 0; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); line-height: 18px;">for 10% off your next order</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+            <td class="footer">
+                <a href="https://www.bulkcannabis.cc" style="text-decoration:none;">
+                    <img src="https://www.bulkcannabis.cc/wp-content/uploads/2025/01/bulkcannabiscc-site-logo-.png" alt="BulkCannabis.cc" style="max-width: 140px; margin-bottom: 15px;">
+                </a>
+                <p class="footer-text">
+                    <strong style="color: #44ba5d;">BULKCANNABIS.CC</strong><br>
+                    Premium quality. Bulk prices. Discreet shipping across Canada.
+                </p>
+                <div class="social-links">
+                    <a href="https://x.com/bulkcannabiscc" class="social-link">X / Twitter</a>
+                    <a href="https://www.instagram.com/bulkcannabiscc/" class="social-link">Instagram</a>
+                    <a href="https://discord.gg/bulkcannabis" class="social-link">Discord</a>
+                </div>
+                <p class="unsubscribe">
+                    You're receiving this because you signed up at bulkcannabis.cc<br>
+                    <a href="#">Unsubscribe</a> | <a href="#">Manage Preferences</a>
+                </p>
+                <p style="margin: 10px 0 0 0; font-size: 10px; color: #555555;">&copy; 2026 BulkCannabis.cc</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
